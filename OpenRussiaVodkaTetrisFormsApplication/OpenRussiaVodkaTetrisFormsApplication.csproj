@@ -46,9 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElementCoordonates.cs" />
-    <Compile Include="ElementCoordonatesStructure.cs" />
-    <Compile Include="Elements.cs" />
+    <Compile Include="PieceFactory.cs" />
+    <Compile Include="PieceCoordonates.cs" />
+    <Compile Include="PieceCoordonatesStructure.cs" />
+    <Compile Include="Piece.cs" />
     <Compile Include="TetrisControls.cs" />
     <Compile Include="ORVTForm.cs">
       <SubType>Form</SubType>

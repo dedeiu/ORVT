@@ -17,7 +17,7 @@ namespace ORVT
         {
             InitializeComponent();
             GameMenu.BringToFront();
-            tetris.initialize(this);
+            tetris.Init(this);
         }
 
         private void GameSurface_Paint(object sender, PaintEventArgs e)
@@ -26,7 +26,7 @@ namespace ORVT
 
         private void OVRTForm_KeyDown(object sender, KeyEventArgs e)
         {
-            tetris.updatePiecePosition(e.KeyCode, this);
+            tetris.UpdatePiecePosition(e.KeyCode, this);
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -39,16 +39,16 @@ namespace ORVT
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tetris.isRunning())
+            if (tetris.IsRunning())
             {
-                if (MessageBox.Show("Are you sure you want to start a new game ? This will reset your current game progress. ", "Confirm new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, 0, false) == DialogResult.Yes)
+                if (MessageBox.Show("Are you sure you want to Start a new game ? This will Reset your current game progress. ", "Confirm new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, 0, false) == DialogResult.Yes)
                 {
-                    tetris.reset();
+                    tetris.Reset();
                 }
             }
             else
             {
-                tetris.start();
+                tetris.Start();
             }
         }
     }

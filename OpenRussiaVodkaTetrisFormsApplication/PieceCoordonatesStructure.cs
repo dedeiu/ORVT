@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ORVT
 {
-    public struct pCoords
+    public struct PieceCoordonatesStructure
     {
         public int X, Y;
-        public pCoords(int x, int y)
+        public PieceCoordonatesStructure(int x, int y)
         {
             X = x;
             Y = y;
