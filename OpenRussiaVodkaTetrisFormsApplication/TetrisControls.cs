@@ -6,22 +6,21 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication1
+namespace ORVT
 {
     class TetrisControls
     {
         private Graphics tSurface = null;
         private Label tScore = null;
         private Color tSurfaceColor = Color.Black;
-        public const int SURFACE_COLS = 10;
-        public const int SURFACE_ROWS = 20;
+        public const int SURFACE_COLS = 10, SURFACE_ROWS = 20;
         public int[,] surfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
         public tPiece piece = null;
         private int score = 0, speed = 1;
-        private Form1 tForm = null;
+        private ORVTForm tForm = null;
         public const int RED = 1, BLUE = 2, YELLOW = 3, GREEN = 4, ORANGE = 5;
 
-        public void useGraphics(Form1 form)
+        public void useGraphics(ORVTForm form)
         {
             this.tSurface = form.gameSurface.CreateGraphics();
             this.tScore = form.score; this.tScore.Text = score.ToString(); this.tForm = form;
@@ -30,40 +29,37 @@ namespace WindowsFormsApplication1
             this.tSurface.Dispose();
         }
 
-        /* this method draws the surface matrix on board panel */
         public void draw()
         {
-            /* for every full line, update score */
-            while (this.verifyRows())
+            if (!pieceCanMove())
             {
-                this.piece = null;
-                score += 10 * speed;
-            };
+                while (this.verifyRows())
+                {
+                    this.piece = null;
+                    score += 10 * speed;
+                };
+            }
             this.tScore.Text = score.ToString();
 
-            /* check the satus of current piece from board */
             this.checkCurrentPiece();
 
-            /* get color objects for the board */
             Pen pen = new Pen(Color.Black, 1);
             Color colorObj = this.getColor(TetrisControls.RED);
             Brush brush = new SolidBrush(colorObj);
 
-            /* preserve width and height from piece ratio */
             int blockWidth = Convert.ToInt32(tSurface.VisibleClipBounds.Width / SURFACE_COLS);
             int blockHeight = Convert.ToInt32(tSurface.VisibleClipBounds.Height / SURFACE_ROWS);
 
-            /* populate tetris board with necessary data */
             for (int col = 0; col < SURFACE_COLS; col++)
             {
                 for (int row = 0; row < SURFACE_ROWS; row++)
                 {
                     if (surfaceMatrix[col, row] > 0)
                     {
-                        /* set color */
+
                         colorObj = this.getColor(surfaceMatrix[col, row]);
                         brush = new SolidBrush(colorObj);
-                        /* build block */
+
                         Rectangle block = new Rectangle();
                         block.X = col * blockWidth;
                         block.Y = row * blockHeight;
@@ -76,7 +72,6 @@ namespace WindowsFormsApplication1
             }
         }
 
-        /* get color index */
         private Color getColor(int color)
         {
             Color colorObj = Color.Red;
@@ -101,10 +96,8 @@ namespace WindowsFormsApplication1
             return colorObj;
         }
 
-        /* check for each line. if the sum of all block from current line equal with board lenght then call removeStreightLine() */
         private bool verifyRows()
         {
-
             for (int row = 0; row < SURFACE_ROWS; row++)
             {
                 int colSum = 0;
@@ -124,7 +117,6 @@ namespace WindowsFormsApplication1
             return false;
         }
 
-        /* this method removes a full line from board */
         private void removeStreightLine(int currentRow)
         {
             for (int row = currentRow; row >= 0; row--)
@@ -143,7 +135,6 @@ namespace WindowsFormsApplication1
             }
         }
 
-        /* this method checks if current piece exists on board */
         private void checkCurrentPiece()
         {
             if (piece == null)
@@ -151,6 +142,22 @@ namespace WindowsFormsApplication1
                 tPieceFactory pieceFactory = new tPieceFactory(this);
                 piece = pieceFactory.getRandomPiece();
             }
+        }
+
+        private bool pieceCanMove()
+        {
+            if (piece != null && piece.tPieceCoordonates.coordonateList.Find(coord => coord.Y != SURFACE_ROWS).Y != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void updatePiecePosition(Keys key, ORVTForm form)
+        {
+            checkCurrentPiece();
+            piece.changePosition(key);
+            useGraphics(form);
         }
 
         public void reset()
