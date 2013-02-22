@@ -8,8 +8,14 @@ namespace ORVT
 {
     class tPieceCoordonates
     {
+        #region Properties
+
         public List<pCoords> coordonateList = new List<pCoords>();
         public int top = -1, left = -1, pWidth = 0, pHeight = 0;
+
+        #endregion
+
+        #region Constructor
 
         public tPieceCoordonates(int col, int row, int width, int height)
         {
@@ -18,19 +24,20 @@ namespace ORVT
             this.set(col, row);
         }
 
-        /* this method adds coordonates for current piece */
+        #endregion
+
+        #region Public Methods
+
         public void set(int col, int row)
         {
             coordonateList.Add(new pCoords(col, row));
         }
 
-        /* this method resets coordonates for current piece */
         public void resetCoordonates()
         {
             coordonateList.Clear();
         }
 
-        /* this method updates, if necessary, the position of current tetris piece depending on key down eveniment */
         public void update(Keys direction, TetrisControls tBoard)
         {
             List<pCoords> newCoordList = new List<pCoords>();
@@ -86,7 +93,10 @@ namespace ORVT
             }
         }
 
-        /* this method creates coordonates for 90 degree rotation of current piece */
+        #endregion
+
+        #region Private Methods
+
         private List<pCoords> createTempRotatedPieceCoordonates(int color)
         {
             List<pCoords> tempCoordList = new List<pCoords>();
@@ -111,6 +121,8 @@ namespace ORVT
             }
             return tempCoordList;
         }
+
+        #endregion
     }
 
 }

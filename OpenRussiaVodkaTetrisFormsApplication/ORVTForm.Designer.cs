@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.gameSurface = new System.Windows.Forms.Panel();
-            this.mainCycle = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.score = new System.Windows.Forms.Label();
             this.GameMenu = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.restartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GameMenu.SuspendLayout();
             this.SuspendLayout();
@@ -47,13 +44,7 @@
             this.gameSurface.Name = "gameSurface";
             this.gameSurface.Size = new System.Drawing.Size(300, 480);
             this.gameSurface.TabIndex = 0;
-            this.gameSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.gameSurface_Paint);
-            // 
-            // mainCycle
-            // 
-            this.mainCycle.Enabled = true;
-            this.mainCycle.Interval = 1500;
-            this.mainCycle.Tick += new System.EventHandler(this.mainCycle_Tick);
+            this.gameSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.GameSurface_Paint);
             // 
             // label1
             // 
@@ -88,7 +79,6 @@
             // 
             this.gameToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripMenuItem,
-            this.restartToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
             this.gameToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
@@ -99,20 +89,14 @@
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-            // 
-            // restartToolStripMenuItem
-            // 
-            this.restartToolStripMenuItem.Name = "restartToolStripMenuItem";
-            this.restartToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.restartToolStripMenuItem.Text = "Restart";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // ORVTForm
             // 
@@ -129,7 +113,7 @@
             this.MaximizeBox = false;
             this.Name = "ORVTForm";
             this.Text = "ORVTForm";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OVRTForm_KeyDown);
             this.GameMenu.ResumeLayout(false);
             this.GameMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -142,11 +126,9 @@
         public System.Windows.Forms.Panel gameSurface;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Label score;
-        public System.Windows.Forms.Timer mainCycle;
         private System.Windows.Forms.MenuStrip GameMenu;
         private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem restartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }

@@ -11,39 +11,25 @@ namespace ORVT
 {
     public partial class ORVTForm : Form
     {
-        private TetrisControls tetris;
+        private TetrisControls tetris = new TetrisControls();
 
         public ORVTForm()
         {
             InitializeComponent();
             GameMenu.BringToFront();
+            tetris.initialize(this);
         }
 
-        private void gameSurface_Paint(object sender, PaintEventArgs e)
+        private void GameSurface_Paint(object sender, PaintEventArgs e)
         {
-            if (tetris != null)
-            {
-                tetris.useGraphics(this);
-            }
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void OVRTForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (tetris != null)
-            {
-                tetris.updatePiecePosition(e.KeyCode, this);
-            }
+            tetris.updatePiecePosition(e.KeyCode, this);
         }
 
-        private void mainCycle_Tick(object sender, EventArgs e)
-        {
-            if (tetris != null)
-            {
-                //tetris.updatePiecePosition(Keys.Down, this);
-            }
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure ?", "Confirm Close", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, 0, false) == DialogResult.Yes)
             {
@@ -51,20 +37,18 @@ namespace ORVT
             }
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tetris == null)
-            {
-                tetris = new TetrisControls();
-                tetris.updatePiecePosition(Keys.Down, this);
-            }
-            else
+            if (tetris.isRunning())
             {
                 if (MessageBox.Show("Are you sure you want to start a new game ? This will reset your current game progress. ", "Confirm new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, 0, false) == DialogResult.Yes)
                 {
                     tetris.reset();
-                    tetris.useGraphics(this);
                 }
+            }
+            else
+            {
+                tetris.start();
             }
         }
     }

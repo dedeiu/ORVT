@@ -25,7 +25,7 @@ namespace ORVT
         {
             foreach (pCoords pCoord in this.tPieceCoordonates.coordonateList)
             {
-                this.tBoard.surfaceMatrix[pCoord.X, pCoord.Y] = color;
+                this.tBoard.SurfaceMatrix[pCoord.X, pCoord.Y] = color;
             }
         }
 
@@ -49,7 +49,7 @@ namespace ORVT
             /* check existing elements on tetris board */
             foreach (pCoords pCoord in pieceCoordonates)
             {
-                if(tBoard.surfaceMatrix[pCoord.X, pCoord.Y] > 0) 
+                if(tBoard.SurfaceMatrix[pCoord.X, pCoord.Y] > 0) 
                 {
                     return true;
                 }

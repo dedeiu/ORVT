@@ -10,20 +10,72 @@ namespace ORVT
 {
     class TetrisControls
     {
+        # region Properties
+
         private Graphics tSurface = null;
         private Label tScore = null;
         private Color tSurfaceColor = Color.Black;
         public const int SURFACE_COLS = 10, SURFACE_ROWS = 20;
-        public int[,] surfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
+        public int[,] SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
         public tPiece piece = null;
-        private int score = 0, speed = 1;
+        private int score = 0, speed = 1000 * 1;
         private ORVTForm tForm = null;
         public const int RED = 1, BLUE = 2, YELLOW = 3, GREEN = 4, ORANGE = 5;
+        private Timer timer = new Timer();
+
+        #endregion
+
+        #region Public Methods
+
+        public void initialize(ORVTForm form)
+        {
+            if (this.tSurface == null)
+            {
+                useGraphics(form);
+                this.timer.Tick += new EventHandler(timerTick);
+                this.timer.Interval = speed;
+                this.timer.Enabled = true;
+                this.timer.Stop();
+            }
+        }
+
+        public void start()
+        {
+            if (this.tSurface == null)
+            {
+                throw new Exception("ORVT must be initialized first. Please use TetrisControls.initialize(your_form_instance) method.");
+            }
+
+            tPieceFactory pieceFactory = new tPieceFactory(this);
+            this.piece = pieceFactory.getRandomPiece();
+
+            this.timer.Start();
+
+            useGraphics(this.tForm);
+        }
+
+        public void stop()
+        {
+            this.timer.Stop();
+        }
+
+        public void reset()
+        {
+            stop();
+            this.SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
+            this.score = 0;
+            start();
+        }
+
+        public bool isRunning()
+        {
+            return (this.timer.Enabled == true ? true : false);
+        }
 
         public void useGraphics(ORVTForm form)
         {
             this.tSurface = form.gameSurface.CreateGraphics();
-            this.tScore = form.score; this.tScore.Text = score.ToString(); this.tForm = form;
+            this.tScore = form.score; this.tScore.Text = this.score.ToString(); this.tForm = form;
             this.tSurface.Clear(this.tSurfaceColor);
             this.draw();
             this.tSurface.Dispose();
@@ -35,9 +87,9 @@ namespace ORVT
             {
                 while (this.verifyRows())
                 {
-                    this.piece = null;
-                    score += 10 * speed;
+                    this.score += 10 * this.speed / 100;
                 };
+                this.piece = null;
             }
             this.tScore.Text = score.ToString();
 
@@ -54,10 +106,10 @@ namespace ORVT
             {
                 for (int row = 0; row < SURFACE_ROWS; row++)
                 {
-                    if (surfaceMatrix[col, row] > 0)
+                    if (SurfaceMatrix[col, row] > 0)
                     {
 
-                        colorObj = this.getColor(surfaceMatrix[col, row]);
+                        colorObj = this.getColor(SurfaceMatrix[col, row]);
                         brush = new SolidBrush(colorObj);
 
                         Rectangle block = new Rectangle();
@@ -70,6 +122,22 @@ namespace ORVT
                     }
                 }
             }
+        }
+
+        public void updatePiecePosition(Keys key, ORVTForm form)
+        {
+            checkCurrentPiece();
+            piece.changePosition(key);
+            useGraphics(form);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void timerTick(object sender, EventArgs e)
+        {
+            updatePiecePosition(Keys.Down, this.tForm);
         }
 
         private Color getColor(int color)
@@ -103,7 +171,7 @@ namespace ORVT
                 int colSum = 0;
                 for (int col = 0; col < SURFACE_COLS; col++)
                 {
-                    if (this.surfaceMatrix[col, row] > 0)
+                    if (this.SurfaceMatrix[col, row] > 0)
                     {
                         colSum++;
                     }
@@ -125,11 +193,11 @@ namespace ORVT
                 {
                     if ((row - 1) >= 0)
                     {
-                        this.surfaceMatrix[col, row] = this.surfaceMatrix[col, (row - 1)];
+                        this.SurfaceMatrix[col, row] = this.SurfaceMatrix[col, (row - 1)];
                     }
                     else
                     {
-                        this.surfaceMatrix[col, row] = 0;
+                        this.SurfaceMatrix[col, row] = 0;
                     }
                 }
             }
@@ -146,28 +214,22 @@ namespace ORVT
 
         private bool pieceCanMove()
         {
-            if (piece != null && piece.tPieceCoordonates.coordonateList.Find(coord => coord.Y != SURFACE_ROWS).Y != null)
+            
+            if (piece != null)
             {
-                return true;
+                var coordObj = piece.tPieceCoordonates.coordonateList.Find(coord => coord.Y == SURFACE_ROWS);
+                if (coordObj.Y == 0 && coordObj.Y != SURFACE_ROWS)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             return false;
         }
 
-        public void updatePiecePosition(Keys key, ORVTForm form)
-        {
-            checkCurrentPiece();
-            piece.changePosition(key);
-            useGraphics(form);
-        }
-
-        public void reset()
-        {
-            this.tForm.mainCycle.Enabled = false;
-            this.surfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
-            this.score = 0;
-            tPieceFactory pieceFactory = new tPieceFactory(this);
-            this.piece = pieceFactory.getRandomPiece();
-            this.tForm.mainCycle.Start();
-        }
+        #endregion
     }
 }
