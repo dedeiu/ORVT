@@ -18,10 +18,12 @@ namespace ORVT
         public const int SURFACE_COLS = 10, SURFACE_ROWS = 20;
         public int[,] SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
         public Piece Piece = null;
+        public Piece NextPiece = null;
         private int score = 0, speed = 1000 * 1;
-        private ORVTForm tForm = null;
+        private ORVTForm GameForm = null;
         public const int RED = 1, BLUE = 2, YELLOW = 3, GREEN = 4, ORANGE = 5;
         private Timer timer = new Timer();
+        private PieceFactory pieceFactory = null;
 
         #endregion
 
@@ -29,9 +31,13 @@ namespace ORVT
 
         public void Init(ORVTForm form)
         {
-            if (this.GameSurface == null)
+            if (this.GameForm == null)
             {
-                createGraphics(form);
+                this.pieceFactory = new PieceFactory(this);
+
+                GameScore = form.score;
+                GameScore.Text = this.score.ToString();
+                GameForm = form;
                 this.timer.Tick += new EventHandler(timerTick);
                 this.timer.Interval = speed;
                 this.timer.Enabled = true;
@@ -41,29 +47,30 @@ namespace ORVT
 
         public void Start()
         {
-            if (this.GameSurface == null)
+            if (this.GameForm == null)
             {
                 throw new Exception("ORVT must be initialized first. Please use TetrisControls.Init(your_form_instance) method.");
             }
 
-            PieceFactory pieceFactory = new PieceFactory(this);
-            this.Piece = pieceFactory.GetRandomPiece();
+            Piece = null;
+            NextPiece = null;
+            SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
+            this.score = 0;
+            this.createGraphics(this.GameForm);
 
             this.timer.Start();
-
-            createGraphics(this.tForm);
         }
 
         public void Stop()
         {
+            Piece = null;
+            NextPiece = null;
             this.timer.Stop();
         }
 
         public void Reset()
         {
             Stop();
-            this.SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
-            this.score = 0;
             Start();
         }
 
@@ -74,7 +81,6 @@ namespace ORVT
 
         public void UpdatePiecePosition(Keys key, ORVTForm form)
         {
-            this.checkTetrisPiece();
             Piece.ChangePosition(key);
             this.createGraphics(form);
         }
@@ -85,22 +91,22 @@ namespace ORVT
 
         private void timerTick(object sender, EventArgs e)
         {
-            UpdatePiecePosition(Keys.Down, this.tForm);
+            if (Piece != null)
+            {
+                UpdatePiecePosition(Keys.Down, this.GameForm);
+            }
         }
 
         private void createGraphics(ORVTForm form)
         {
-            this.GameSurface = form.gameSurface.CreateGraphics();
-            this.GameScore = form.score; 
-            this.GameScore.Text = this.score.ToString(); 
-            this.tForm = form;
-            this.GameSurface.Clear(this.GameSurfaceColor);
-            this.draw();
-            this.GameSurface.Dispose();
+            this.draw(form.gameSurface);
+            this.drawNextPiece(form.nextPiecePanel);
         }
 
-        private void draw()
+        private void draw(Panel GamePanel)
         {
+            GameSurface = GamePanel.CreateGraphics();
+            GameSurface.Clear(this.GameSurfaceColor);
             if (!pieceCanMove())
             {
                 while (this.verifyRows())
@@ -140,6 +146,34 @@ namespace ORVT
                     }
                 }
             }
+            GameSurface.Dispose();
+        }
+
+        private void drawNextPiece(Panel nextPiecePanel)
+        {
+            if (NextPiece == null) return;
+            GameSurface = nextPiecePanel.CreateGraphics();
+            GameSurface.Clear(this.GameSurfaceColor);
+
+            int blockWidth = Convert.ToInt32(GameSurface.VisibleClipBounds.Width / 4);
+            int blockHeight = Convert.ToInt32(GameSurface.VisibleClipBounds.Height / 4);
+
+            Pen pen = new Pen(Color.Black, 1);
+            Color colorObj = this.getColor(NextPiece.Color);
+            Brush brush = new SolidBrush(colorObj);
+
+            foreach (PieceCoordonatesStructure pCoords in NextPiece.PieceCoordonates.CoordonateList)
+            {
+                Rectangle block = new Rectangle();
+                block.X = (pCoords.X - 5) * blockWidth;
+                block.Y = pCoords.Y * blockHeight;
+                block.Width = blockWidth;
+                block.Height = blockHeight;
+                this.GameSurface.FillRectangle(brush, block);
+                this.GameSurface.DrawRectangle(pen, block);
+            }
+
+            GameSurface.Dispose();
         }
 
         private Color getColor(int color)
@@ -207,10 +241,25 @@ namespace ORVT
 
         private void checkTetrisPiece()
         {
+            if (NextPiece == null)
+            {
+                NextPiece = this.pieceFactory.GetRandomPiece();
+            }
+
             if (Piece == null)
             {
-                PieceFactory pieceFactory = new PieceFactory(this);
-                Piece = pieceFactory.GetRandomPiece();
+                Piece = NextPiece;
+                NextPiece = this.pieceFactory.GetRandomPiece();
+                int deltaY = (Piece.PieceCoordonates.Top + Piece.PieceCoordonates.PieceHeight);
+                int deltaX = (Piece.PieceCoordonates.Left + Piece.PieceCoordonates.PieceWidth);
+                if (Piece.WillCollide(Piece.PieceCoordonates.CoordonateList, deltaX, deltaY, this, false))
+                {
+                    this.Stop();
+                }
+                else
+                {
+                    Piece.UpdatePieceOnTetrisBoard(Piece.Color);
+                }
             }
         }
 

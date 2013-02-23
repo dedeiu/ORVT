@@ -18,6 +18,8 @@ namespace ORVT
             InitializeComponent();
             GameMenu.BringToFront();
             tetris.Init(this);
+            score.Visible = false;
+            scorelabel.Visible = false;
         }
 
         private void GameSurface_Paint(object sender, PaintEventArgs e)
@@ -26,7 +28,10 @@ namespace ORVT
 
         private void OVRTForm_KeyDown(object sender, KeyEventArgs e)
         {
-            tetris.UpdatePiecePosition(e.KeyCode, this);
+            if (tetris.IsRunning())
+            {
+                tetris.UpdatePiecePosition(e.KeyCode, this);
+            }
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -48,6 +53,8 @@ namespace ORVT
             }
             else
             {
+                score.Visible = true;
+                scorelabel.Visible = true;
                 tetris.Start();
             }
         }

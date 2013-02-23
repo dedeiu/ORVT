@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.gameSurface = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.scorelabel = new System.Windows.Forms.Label();
             this.score = new System.Windows.Forms.Label();
             this.GameMenu = new System.Windows.Forms.MenuStrip();
             this.gameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nextPiecePanel = new System.Windows.Forms.Panel();
             this.GameMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,20 +47,21 @@
             this.gameSurface.TabIndex = 0;
             this.gameSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.GameSurface_Paint);
             // 
-            // label1
+            // scorelabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(318, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Score:";
+            this.scorelabel.AccessibleName = "scoretext";
+            this.scorelabel.AutoSize = true;
+            this.scorelabel.Location = new System.Drawing.Point(318, 130);
+            this.scorelabel.Name = "scorelabel";
+            this.scorelabel.Size = new System.Drawing.Size(38, 13);
+            this.scorelabel.TabIndex = 1;
+            this.scorelabel.Text = "Score:";
             // 
             // score
             // 
-            this.score.AccessibleName = "score";
+            this.score.AccessibleName = "scorelabel";
             this.score.AutoSize = true;
-            this.score.Location = new System.Drawing.Point(362, 26);
+            this.score.Location = new System.Drawing.Point(362, 130);
             this.score.Name = "score";
             this.score.Size = new System.Drawing.Size(13, 13);
             this.score.TabIndex = 2;
@@ -81,30 +83,38 @@
             this.newToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.gameToolStripMenuItem.Name = "gameToolStripMenuItem";
-            this.gameToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.gameToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.gameToolStripMenuItem.Text = "Game";
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
+            // 
+            // nextPiecePanel
+            // 
+            this.nextPiecePanel.Location = new System.Drawing.Point(318, 27);
+            this.nextPiecePanel.Name = "nextPiecePanel";
+            this.nextPiecePanel.Size = new System.Drawing.Size(106, 100);
+            this.nextPiecePanel.TabIndex = 4;
             // 
             // ORVTForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(736, 518);
+            this.Controls.Add(this.nextPiecePanel);
             this.Controls.Add(this.score);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.scorelabel);
             this.Controls.Add(this.gameSurface);
             this.Controls.Add(this.GameMenu);
             this.DoubleBuffered = true;
@@ -124,12 +134,13 @@
         #endregion
 
         public System.Windows.Forms.Panel gameSurface;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label scorelabel;
         public System.Windows.Forms.Label score;
         private System.Windows.Forms.MenuStrip GameMenu;
         private System.Windows.Forms.ToolStripMenuItem gameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        public System.Windows.Forms.Panel nextPiecePanel;
     }
 }
 

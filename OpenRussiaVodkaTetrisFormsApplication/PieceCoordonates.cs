@@ -19,8 +19,10 @@ namespace ORVT
 
         public PieceCoordonates(int col, int row, int width, int height)
         {
-            this.PieceWidth = width; this.PieceHeight = height;
-            this.Left = col; this.Top = row;
+            this.PieceWidth = width; 
+            this.PieceHeight = height;
+            this.Left = col; 
+            this.Top = row;
             this.Set(col, row);
         }
 
@@ -41,9 +43,12 @@ namespace ORVT
         public void Update(Keys direction, TetrisControls tBoard)
         {
             List<PieceCoordonatesStructure> newCoordList = new List<PieceCoordonatesStructure>();
-            int deltaY = (this.Top + this.PieceHeight), deltaX = (this.Left + this.PieceWidth);
-            int newTop = this.Top, newLeft = this.Left;
-            int newPHeight = this.PieceHeight, newPWidth = this.PieceWidth;
+            int deltaY = (this.Top + this.PieceHeight);
+            int deltaX = (this.Left + this.PieceWidth);
+            int newTop = this.Top;
+            int newLeft = this.Left;
+            int newPHeight = this.PieceHeight;
+            int newPWidth = this.PieceWidth;
 
             switch (direction)
             {
@@ -73,8 +78,10 @@ namespace ORVT
                     break;
                 case Keys.Space:
                     newCoordList = new List<PieceCoordonatesStructure>(this.createTempRotatedPieceCoordonates(tBoard.Piece.Color));
-                    newPHeight = this.PieceWidth; newPWidth = this.PieceHeight;
-                    deltaY = (this.Top + this.PieceWidth); deltaX = (this.Left + this.PieceHeight);
+                    newPHeight = this.PieceWidth; 
+                    newPWidth = this.PieceHeight;
+                    deltaY = (this.Top + this.PieceWidth); 
+                    deltaX = (this.Left + this.PieceHeight);
                     break;
                 default:
                     newCoordList = new List<PieceCoordonatesStructure>(this.CoordonateList);
@@ -84,8 +91,10 @@ namespace ORVT
             if (!Piece.WillCollide(newCoordList, deltaX, deltaY, tBoard, true))
             {
                 this.CoordonateList = new List<PieceCoordonatesStructure>(newCoordList);
-                this.Top = newTop; this.Left = newLeft;
-                this.PieceHeight = newPHeight; this.PieceWidth = newPWidth;
+                this.Top = newTop; 
+                this.Left = newLeft;
+                this.PieceHeight = newPHeight; 
+                this.PieceWidth = newPWidth;
             }
             else if (direction == Keys.Down)
             {
