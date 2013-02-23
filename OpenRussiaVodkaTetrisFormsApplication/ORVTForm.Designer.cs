@@ -36,11 +36,14 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextPiecePanel = new System.Windows.Forms.Panel();
+            this.gameOverLabel = new System.Windows.Forms.Label();
+            this.gameSurface.SuspendLayout();
             this.GameMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // gameSurface
             // 
+            this.gameSurface.Controls.Add(this.gameOverLabel);
             this.gameSurface.Location = new System.Drawing.Point(12, 26);
             this.gameSurface.Name = "gameSurface";
             this.gameSurface.Size = new System.Drawing.Size(300, 480);
@@ -107,6 +110,17 @@
             this.nextPiecePanel.Size = new System.Drawing.Size(106, 100);
             this.nextPiecePanel.TabIndex = 4;
             // 
+            // gameOverLabel
+            // 
+            this.gameOverLabel.Enabled = false;
+            this.gameOverLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gameOverLabel.ForeColor = System.Drawing.Color.White;
+            this.gameOverLabel.Location = new System.Drawing.Point(0, 171);
+            this.gameOverLabel.Name = "gameOverLabel";
+            this.gameOverLabel.Size = new System.Drawing.Size(300, 100);
+            this.gameOverLabel.TabIndex = 1;
+            this.gameOverLabel.Text = "Game Over";
+            // 
             // ORVTForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,6 +138,7 @@
             this.Name = "ORVTForm";
             this.Text = "ORVTForm";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OVRTForm_KeyDown);
+            this.gameSurface.ResumeLayout(false);
             this.GameMenu.ResumeLayout(false);
             this.GameMenu.PerformLayout();
             this.ResumeLayout(false);
@@ -141,6 +156,7 @@
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         public System.Windows.Forms.Panel nextPiecePanel;
+        public System.Windows.Forms.Label gameOverLabel;
     }
 }
 

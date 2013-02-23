@@ -46,9 +46,14 @@ namespace ORVT
         {
             if (tetris.IsRunning())
             {
+                tetris.Pause();
                 if (MessageBox.Show("Are you sure you want to Start a new game ? This will Reset your current game progress. ", "Confirm new game", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, 0, false) == DialogResult.Yes)
                 {
                     tetris.Reset();
+                }
+                else
+                {
+                    tetris.Resume();
                 }
             }
             else

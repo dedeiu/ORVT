@@ -38,6 +38,7 @@ namespace ORVT
                 GameScore = form.score;
                 GameScore.Text = this.score.ToString();
                 GameForm = form;
+                GameForm.gameOverLabel.Visible = false;
                 this.timer.Tick += new EventHandler(timerTick);
                 this.timer.Interval = speed;
                 this.timer.Enabled = true;
@@ -52,6 +53,7 @@ namespace ORVT
                 throw new Exception("ORVT must be initialized first. Please use TetrisControls.Init(your_form_instance) method.");
             }
 
+            GameForm.gameOverLabel.Visible = false;
             Piece = null;
             NextPiece = null;
             SurfaceMatrix = new int[SURFACE_COLS, SURFACE_ROWS];
@@ -66,6 +68,18 @@ namespace ORVT
             Piece = null;
             NextPiece = null;
             this.timer.Stop();
+            GameForm.gameOverLabel.Visible = true;
+            GameForm.gameOverLabel.Text = "Game Over! Your score: " + score.ToString();
+        }
+
+        public void Pause()
+        {
+            this.timer.Stop();
+        }
+
+        public void Resume()
+        {
+            this.timer.Start();
         }
 
         public void Reset()
