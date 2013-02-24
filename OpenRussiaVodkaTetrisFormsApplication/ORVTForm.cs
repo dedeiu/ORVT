@@ -22,10 +22,6 @@ namespace ORVT
             scorelabel.Visible = false;
         }
 
-        private void GameSurface_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
         private void OVRTForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (tetris.IsRunning())

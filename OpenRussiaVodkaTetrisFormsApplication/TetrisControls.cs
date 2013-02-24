@@ -24,6 +24,8 @@ namespace ORVT
         public const int RED = 1, BLUE = 2, YELLOW = 3, GREEN = 4, ORANGE = 5;
         private Timer timer = new Timer();
         private PieceFactory pieceFactory = null;
+        private Bitmap offScreenBmp;
+        private Graphics offScreenDC;
 
         #endregion
 
@@ -43,6 +45,8 @@ namespace ORVT
                 this.timer.Interval = speed;
                 this.timer.Enabled = true;
                 this.timer.Stop();
+                this.offScreenBmp = new Bitmap(GameForm.Width, GameForm.Height);
+                this.offScreenDC = Graphics.FromImage(offScreenBmp);
             }
         }
 
@@ -117,10 +121,15 @@ namespace ORVT
             this.drawNextPiece(form.nextPiecePanel);
         }
 
+
+
         private void draw(Panel GamePanel)
         {
             GameSurface = GamePanel.CreateGraphics();
-            GameSurface.Clear(this.GameSurfaceColor);
+            this.offScreenDC.Clear(this.GameSurfaceColor);
+
+            System.Drawing.BufferedGraphicsContext dc = new BufferedGraphicsContext();
+
             if (!pieceCanMove())
             {
                 while (this.verifyRows())
@@ -155,11 +164,12 @@ namespace ORVT
                         block.Y = row * blockHeight;
                         block.Width = blockWidth;
                         block.Height = blockHeight;
-                        this.GameSurface.FillRectangle(brush, block);
-                        this.GameSurface.DrawRectangle(pen, block);
+                        this.offScreenDC.FillRectangle(brush, block);
+                        this.offScreenDC.DrawRectangle(pen, block);
                     }
                 }
             }
+            GameSurface.DrawImage(this.offScreenBmp, 0, 0);
             GameSurface.Dispose();
         }
 
@@ -183,8 +193,8 @@ namespace ORVT
                 block.Y = pCoords.Y * blockHeight;
                 block.Width = blockWidth;
                 block.Height = blockHeight;
-                this.GameSurface.FillRectangle(brush, block);
-                this.GameSurface.DrawRectangle(pen, block);
+                GameSurface.FillRectangle(brush, block);
+                GameSurface.DrawRectangle(pen, block);
             }
 
             GameSurface.Dispose();

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.gameSurface = new System.Windows.Forms.Panel();
             this.scorelabel = new System.Windows.Forms.Label();
             this.score = new System.Windows.Forms.Label();
             this.GameMenu = new System.Windows.Forms.MenuStrip();
@@ -37,18 +36,10 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nextPiecePanel = new System.Windows.Forms.Panel();
             this.gameOverLabel = new System.Windows.Forms.Label();
-            this.gameSurface.SuspendLayout();
+            this.gameSurface = new System.Windows.Forms.Panel();
             this.GameMenu.SuspendLayout();
+            this.gameSurface.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // gameSurface
-            // 
-            this.gameSurface.Controls.Add(this.gameOverLabel);
-            this.gameSurface.Location = new System.Drawing.Point(12, 26);
-            this.gameSurface.Name = "gameSurface";
-            this.gameSurface.Size = new System.Drawing.Size(300, 480);
-            this.gameSurface.TabIndex = 0;
-            this.gameSurface.Paint += new System.Windows.Forms.PaintEventHandler(this.GameSurface_Paint);
             // 
             // scorelabel
             // 
@@ -121,6 +112,14 @@
             this.gameOverLabel.TabIndex = 1;
             this.gameOverLabel.Text = "Game Over";
             // 
+            // gameSurface
+            // 
+            this.gameSurface.Controls.Add(this.gameOverLabel);
+            this.gameSurface.Location = new System.Drawing.Point(12, 26);
+            this.gameSurface.Name = "gameSurface";
+            this.gameSurface.Size = new System.Drawing.Size(300, 480);
+            this.gameSurface.TabIndex = 0;
+            // 
             // ORVTForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,9 +137,9 @@
             this.Name = "ORVTForm";
             this.Text = "ORVTForm";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OVRTForm_KeyDown);
-            this.gameSurface.ResumeLayout(false);
             this.GameMenu.ResumeLayout(false);
             this.GameMenu.PerformLayout();
+            this.gameSurface.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,7 +147,6 @@
 
         #endregion
 
-        public System.Windows.Forms.Panel gameSurface;
         private System.Windows.Forms.Label scorelabel;
         public System.Windows.Forms.Label score;
         private System.Windows.Forms.MenuStrip GameMenu;
@@ -157,6 +155,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         public System.Windows.Forms.Panel nextPiecePanel;
         public System.Windows.Forms.Label gameOverLabel;
+        public System.Windows.Forms.Panel gameSurface;
     }
 }
 
